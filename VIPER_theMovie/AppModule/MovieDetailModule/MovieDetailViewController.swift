@@ -46,8 +46,11 @@ class MovieDetailViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.title = "Movie Detail"
         
+        navigationItem.largeTitleDisplayMode = .never
+        
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imgView.isUserInteractionEnabled = true

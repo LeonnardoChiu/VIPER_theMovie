@@ -24,14 +24,25 @@ class MovieGenreViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         self.title = "Genres"
+        navigationItem.largeTitleDisplayMode = .never
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backTapped))
+        setUpBackButton()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "clear genres", style: .plain, target: self, action: #selector(clearGenresTapped))
         
         tableView.delegate = self
         tableView.dataSource = self
         
         presenter?.startRequestGenres()
+    }
+    
+    func setUpBackButton() {
+        let backbutton = UIButton(type: .custom)
+        
+        backbutton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        backbutton.setTitle("Back", for: .normal)
+        backbutton.setTitleColor(backbutton.tintColor, for: .normal)
+        backbutton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
     }
     
     @objc func clearGenresTapped() {

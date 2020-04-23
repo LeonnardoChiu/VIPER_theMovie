@@ -39,7 +39,6 @@ class MovieGenreRouter: PresenterToRouteMovieGenreProtocol {
         
         navigationController.popToRootViewController(animated: true)
         
-        
     }
     
 }

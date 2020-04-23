@@ -32,6 +32,7 @@ class MovieViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.title = "theMovie"
         
+        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Genre", style: .plain, target: self, action: #selector(genreTapped))
         
         initSearchBar()
