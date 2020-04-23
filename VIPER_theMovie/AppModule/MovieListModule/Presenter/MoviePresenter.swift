@@ -17,7 +17,7 @@ class MoviePresenter: ViewToPresenterProtocol {
     
     var router: PresenterToRouteProtocol?
     
-    func startRequestMovie(page: Int, genres: String) {
+    func startRequestMovie(page: Int, genres: [String]) {
         interactor?.requestMovie(page: page, genres: genres)
     }
     
@@ -28,6 +28,11 @@ class MoviePresenter: ViewToPresenterProtocol {
     func showMovieDetail(movieID: Int, navigationController: UINavigationController) {
         router?.pushToMovieDetail(movieID: movieID, navigationController: navigationController)
     }
+    
+    func showMovieGenres(selectedGenre: [String], navigationController: UINavigationController) {
+        router?.pushToMovieGenres(selectedGenre: selectedGenre, navigationController: navigationController)
+    }
+    
 }
 
 extension MoviePresenter: InteractorToPresenterProtocol {

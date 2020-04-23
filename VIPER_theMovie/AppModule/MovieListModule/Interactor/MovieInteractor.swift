@@ -17,11 +17,16 @@ class MovieInteractor: PresenterToInteractorProtocol {
     
     var genreList: [GenreModel]?
     
-    func requestMovie(page: Int, genres: String) {
+    func requestMovie(page: Int, genres: [String]) {
         
+        var selectedGenreConverted = ""
+        
+        if genres.count != 0 {
+            selectedGenreConverted = genres.joined(separator: ",")
+        }
         
         requestGenre {
-            Alamofire.request("\( baseURL)discover/movie?api_key=\(apiKey)&language=en-US&include_adult=false&page=\(page)&with_genres=\(genres)").responseJSON { (response) in
+            Alamofire.request("\( baseURL)discover/movie?api_key=\(apiKey)&language=en-US&include_adult=false&page=\(page)&with_genres=\(selectedGenreConverted)").responseJSON { (response) in
 
                 switch response.result {
                 case .success:

@@ -8,11 +8,14 @@
 
 import UIKit
 
+
 class MovieGenreViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
     var presenter: ViewToPresenterMovieGenreProtocol?
+    
+    var genreList: [MovieGenreModel] = []
     
     var selectedGenre: [String] = []
     
@@ -20,22 +23,72 @@ class MovieGenreViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.title = "Genres"
         
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(backTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "clear genres", style: .plain, target: self, action: #selector(clearGenresTapped))
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        presenter?.startRequestGenres()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func clearGenresTapped() {
+        selectedGenre.removeAll()
+        tableView.reloadData()
     }
-    */
-
+    
+    @objc func backTapped() {
+        presenter?.passGenre(selectedGenre: selectedGenre, navigationController: navigationController!)
+    }
 }
 
 extension MovieGenreViewController: PresenterToViewMovieGenreProtocol {
+    func showGenreList(genreList: [MovieGenreModel]) {
+        self.genreList = genreList
+        tableView.reloadData()
+    }
+    
+}
+
+extension MovieGenreViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return genreList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "genreCell", for: indexPath)
+        
+        cell.textLabel?.text = genreList[indexPath.row].name
+        cell.accessoryType = .none
+        cell.selectionStyle = .none
+        
+        if selectedGenre.count != 0 {
+            for genre in selectedGenre {
+                if genre == "\(genreList[indexPath.row].id!)" {
+                    cell.accessoryType = . checkmark
+                }
+            }
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+            for (i, genre) in selectedGenre.enumerated() {
+                if genre == "\(genreList[indexPath.row].id!)" {
+                    selectedGenre.remove(at: i)
+                }
+            }
+        }
+        else{
+            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+            selectedGenre.append("\(genreList[indexPath.row].id!)")
+        }
+    }
+    
     
 }

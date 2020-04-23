@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 
 class MovieGenreRouter: PresenterToRouteMovieGenreProtocol {
+    
+    var window: UIWindow?
+
     static func createModule(selectedGenre: [String]) -> MovieGenreViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let view = storyboard.instantiateViewController(identifier: "MovieGenreViewController") as! MovieGenreViewController
@@ -27,6 +30,16 @@ class MovieGenreRouter: PresenterToRouteMovieGenreProtocol {
         interactor.presenter = presenter
         
         return view
+    }
+    
+    func backToMovieList(selectedGenre: [String], navigationController: UINavigationController) {
+        let movieModule = MovieRouter.createModuleWithGenre(selectedGenre: selectedGenre)
+        
+        navigationController.viewControllers[0] = movieModule
+        
+        navigationController.popToRootViewController(animated: true)
+        
+        
     }
     
 }

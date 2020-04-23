@@ -18,7 +18,7 @@ class MovieViewController: UIViewController {
     
     let searchBar = UISearchBar()
     
-    var movieList:[MovieModel] = []
+    var movieList: [MovieModel] = []
     
     var pageNumber = 1
     
@@ -38,7 +38,7 @@ class MovieViewController: UIViewController {
         
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
-        presentor?.startRequestMovie(page: pageNumber, genres: "")
+        presentor?.startRequestMovie(page: pageNumber, genres: selectedGenre)
         
         tableView.tableHeaderView = searchBar
         tableView.tableFooterView = UIView()
@@ -56,7 +56,7 @@ class MovieViewController: UIViewController {
     }
     
     @objc func genreTapped() {
-        
+        presentor?.showMovieGenres(selectedGenre: selectedGenre, navigationController: navigationController!)
     }
     
 }
@@ -127,7 +127,7 @@ extension MovieViewController: UITableViewDelegate, UITableViewDataSource {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25, execute: {
                     if self.searchBar.text == "" {
 
-                        self.presentor?.startRequestMovie(page: self.pageNumber, genres: "")
+                        self.presentor?.startRequestMovie(page: self.pageNumber, genres: self.selectedGenre)
                     }
                     else {
                         
@@ -157,7 +157,7 @@ extension MovieViewController: UISearchBarDelegate {
         tableView.reloadData()
         if searchBarText == "" {
             
-            presentor?.startRequestMovie(page: pageNumber, genres: "")
+            presentor?.startRequestMovie(page: pageNumber, genres: selectedGenre)
             return
         }
 
